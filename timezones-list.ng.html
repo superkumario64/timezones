@@ -1,0 +1,38 @@
+<div class="container">
+    <blaze-template name="loginButtons"></blaze-template>
+</div>
+<div class="container"
+     ng-show="$root.currentUser">
+    <header class="clearfix">
+        <div class="circle float-left">{{getUserInitials()}}</div>
+        <div class="form-group float-left">
+          <label for="sel1">I am currently in</label>
+          <select ng-model="timezone"
+                  ng-change="setTimezone(timezone)"
+                  class="form-control" id="sel1">
+            <option ng-repeat="timezone in allTimezones track by $index"
+                    ng-selected="timezone == getUserTimezone()"
+                    value={{timezone}}>{{timezone}}</option>
+          </select>
+        </div>
+    </header>
+</div>
+
+<div class="container" 
+     ng-show="$root.currentUser"
+     ng-repeat="zone in getDistinctUserTimezones()">
+    <header class="clearfix">
+        <h4 class="float-left">{{zone}}</h4>
+        <h6 class="float-right">{{ getLocalTime(zone) }}</h6>
+    </header>
+    <header class="clearfix"
+            ng-repeat="timezone in timezones | filter:{ timezone: zone }">
+        <div class="circle float-left">{{getInitialsFromUsername(timezone.username)}}</div>
+        <h6 class="float-left pad-left">{{timezone.username}}</h6>
+    </header>
+</div>
+
+<div class="container"
+     ng-hide="$root.currentUser">
+    <h2>^^^^ Please log in or create an account</h2>
+</div>
